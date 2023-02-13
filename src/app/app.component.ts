@@ -114,7 +114,6 @@ export class AppComponent implements OnInit {
       for (let nA of newAnswers) {
         this.answers[nA.index].answer = nA.answer;
       }
-      this.answers = newAnswers;
       if (!this.checkIfAllEmpty()) {
         this.finalizar(true);
       }
