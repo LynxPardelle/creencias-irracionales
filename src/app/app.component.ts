@@ -170,7 +170,7 @@ export class AppComponent implements OnInit {
     const str = JSON.stringify(this.answers);
     const FileSaver = fileSaver;
     const blob = new Blob([str], { type: 'text/plain;charset=utf-8' });
-    FileSaver.saveAs(blob, 'IdeasIrracionales.txt');
+    FileSaver.saveAs(blob, 'CreenciasIrracionales.txt');
   }
 
   cssCreate() {
