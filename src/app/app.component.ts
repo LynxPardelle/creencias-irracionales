@@ -28,6 +28,14 @@ export class AppComponent implements OnInit {
   public consola: string = '';
   public importInput: string = '';
   public hasAnswers: boolean = false;
+  public options: { option: string; description: string }[] = [
+    { option: 'TD', description: 'Totalmente en desacuerdo.' },
+    { option: 'BD', description: 'Bastante en desacuerdo.' },
+    { option: 'AD', description: 'Algo en desacuerdo.' },
+    { option: 'AA', description: 'Algo de acuerdo.' },
+    { option: 'BD', description: 'Bastante de acuerdo.' },
+    { option: 'TD', description: 'Totalmente de acuerdo.' },
+  ];
   constructor(private _befService: NgxBootstrapExpandedFeaturesService) {
     this.questions.forEach((q) => {
       if (!this.sections.includes(q.section)) {
@@ -83,13 +91,12 @@ export class AppComponent implements OnInit {
   }
 
   getAnswers(imported: boolean = false) {
-    this.consola = JSON.stringify(this.answers);
+    this.consola = 'Ya pueden exportar sus respuestas.';
     if (!imported) {
       this.writeText();
     }
   }
 
-  /* TODO: Check this... */
   importAnswers() {
     try {
       if (this.importInput === '') {
@@ -105,7 +112,12 @@ export class AppComponent implements OnInit {
         );
       }
       for (let nA of newAnswers) {
-        if (this.answers[nA.index].question !== nA.question) {
+        console.log(this.answers[nA.index].question);
+        console.log(nA.question);
+        if (
+          JSON.stringify(this.answers[nA.index].question) !==
+          JSON.stringify(nA.question)
+        ) {
           throw new Error(
             'Una de las preguntas ha sido manipulada, revisa con atención lo que copiaste.'
           );
@@ -142,6 +154,33 @@ export class AppComponent implements OnInit {
       })
       .reduce((sum, a) => sum + a, 0);
     return puntuation;
+  }
+
+  getOption(answer: IAnswer): string {
+    let option: string = '';
+    switch (answer.answer) {
+      case answer.question.option1:
+        option = this.options[0].option;
+        break;
+      case answer.question.option2:
+        option = this.options[1].option;
+        break;
+      case answer.question.option3:
+        option = this.options[2].option;
+        break;
+      case answer.question.option4:
+        option = this.options[3].option;
+        break;
+      case answer.question.option5:
+        option = this.options[4].option;
+        break;
+      case answer.question.option6:
+        option = this.options[5].option;
+        break;
+      default:
+        break;
+    }
+    return option;
   }
 
   checkIfAllEmpty(): boolean {

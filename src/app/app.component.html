@@ -9,23 +9,8 @@
     habitual con la siguiente clave de acuerdo:
   </p>
   <ul class="list-group mx-3">
-    <li class="list-group-item text-break text/center">
-      TD = Totalmente de acuerdo.
-    </li>
-    <li class="list-group-item text-break text/center">
-      BD = Bastante en desacuerdo.
-    </li>
-    <li class="list-group-item text-break text/center">
-      AD = Algo en desacuerdo.
-    </li>
-    <li class="list-group-item text-break text/center">
-      AA = Algo de acuerdo.
-    </li>
-    <li class="list-group-item text-break text/center">
-      BD = Bastante de acuerdo.
-    </li>
-    <li class="list-group-item text-break text/center">
-      TD = Totalmente de acuerdo.
+    <li *ngFor="let opt of options" class="list-group-item text-break text/center">
+      {{ opt.option }} = {{ opt.description }}
     </li>
   </ul>
 </section>
@@ -46,8 +31,8 @@
             getCurrentAnswer().answer === getCurrentAnswer().question.option1,
           'bef-btnOutline-success bef-bg-gray':
             getCurrentAnswer().answer !== getCurrentAnswer().question.option1
-        }">
-        TD
+        }" title="{{ options[0].description }}">
+        {{ options[0].option }}
       </button>
       <button (click)="answerQuestion(getCurrentAnswer().question.option2)"
         class="order-0 order-sm-1 btn px-4 bef bef-textHover-light fw-bold my-3" [ngClass]="{
@@ -55,8 +40,8 @@
             getCurrentAnswer().answer === getCurrentAnswer().question.option2,
           'bef-btnOutline-success bef-bg-gray':
             getCurrentAnswer().answer !== getCurrentAnswer().question.option2
-        }">
-        BD
+        }" title="{{ options[1].description }}">
+        {{ options[1].option }}
       </button>
       <button (click)="answerQuestion(getCurrentAnswer().question.option3)"
         class="order-0 order-sm-1 btn px-4 bef bef-textHover-light fw-bold my-3" [ngClass]="{
@@ -64,8 +49,8 @@
             getCurrentAnswer().answer === getCurrentAnswer().question.option3,
           'bef-btnOutline-success bef-bg-gray':
             getCurrentAnswer().answer !== getCurrentAnswer().question.option3
-        }">
-        AD
+        }" title="{{ options[2].description }}">
+        {{ options[2].option }}
       </button>
       <button (click)="answerQuestion(getCurrentAnswer().question.option4)"
         class="order-0 order-sm-1 btn px-4 bef bef-textHover-light fw-bold my-3" [ngClass]="{
@@ -73,8 +58,8 @@
             getCurrentAnswer().answer === getCurrentAnswer().question.option4,
           'bef-btnOutline-success bef-bg-gray':
             getCurrentAnswer().answer !== getCurrentAnswer().question.option4
-        }">
-        AA
+        }" title="{{ options[3].description }}">
+        {{ options[3].option }}
       </button>
       <button (click)="answerQuestion(getCurrentAnswer().question.option5)"
         class="order-0 order-sm-1 btn px-4 bef bef-textHover-light fw-bold my-3" [ngClass]="{
@@ -82,8 +67,8 @@
             getCurrentAnswer().answer === getCurrentAnswer().question.option5,
           'bef-btnOutline-success bef-bg-gray':
             getCurrentAnswer().answer !== getCurrentAnswer().question.option5
-        }">
-        BD
+        }" title="{{ options[4].description }}">
+        {{ options[4].option }}
       </button>
       <button (click)="answerQuestion(getCurrentAnswer().question.option6)"
         class="order-0 order-sm-1 btn px-4 bef bef-textHover-light fw-bold my-3" [ngClass]="{
@@ -91,34 +76,45 @@
             getCurrentAnswer().answer === getCurrentAnswer().question.option6,
           'bef-btnOutline-success bef-bg-gray':
             getCurrentAnswer().answer !== getCurrentAnswer().question.option6
-        }">
-        TD.
+        }" title="{{ options[5].description }}">
+        {{ options[5].option }}
       </button>
     </div>
   </ng-container>
   <ng-template #elseFinishedTemplate>
-    <h2 class="text-center text-decoration-underline h4 my-3">Tus respuestas</h2>
-    <ul class="list-group mx-3">
-      <li class="list-group-item d-flex flex-wrap justify-content-between">
-        <span class="bef bef-w-calcSD100per__MIN__3_5remED"> Pregunta </span>
-        <span class="border-start border-gray text-center bef bef-w-3rem">
-          Si/No
-        </span>
+    <h2 class="text-center h4 my-3">
+      PUNTUACIÓN DEL REGISTRO DE CREENCIAS
+    </h2>
+    <ul class="list-group mx-3 bg-secondary">
+      <li *ngFor="let sect of sections" class="list-group-item text-break text-center">
+        {{ sect.split(" - ")[1] }} :
+        {{ getPuntuation(sect) }}
       </li>
-      <ng-container *ngFor="let a of answers; let index$ = index; let last$ = last" [exist]="last$"
-        (ngInit)="cssCreate()">
-        <li *ngIf="a.answer !== 0" [exist]="a.answer !== 0" (ngInit)="cssCreate()"
-          class="list-group-item d-flex flex-wrap justify-content-between">
-          <span class="bef bef-w-calcSD100per__MIN__3_5remED text-break">
-            {{ a.index + 1 + " " + a.question.question }}
-          </span>
-          <span class="border-start border-gray text-center bef bef-w-3rem">
-            {{ a.answer }}
-          </span>
-        </li>
-      </ng-container>
     </ul>
   </ng-template>
+</section>
+<section *ngIf="!checkIfAllEmpty()">
+  <h2 class="text-center h4 my-3">Tus respuestas</h2>
+  <ul class="list-group mx-3">
+    <li class="list-group-item d-flex flex-wrap justify-content-between">
+      <span class="bef bef-w-calcSD100per__MIN__3_5remED"> Pregunta </span>
+      <span class="border-start border-gray text-center bef bef-w-3rem">
+        Opción
+      </span>
+    </li>
+    <ng-container *ngFor="let a of answers; let index$ = index; let last$ = last" [exist]="last$"
+      (ngInit)="cssCreate()">
+      <li *ngIf="a.answer !== 0" [exist]="a.answer !== 0" (ngInit)="cssCreate()"
+        class="list-group-item d-flex flex-wrap justify-content-between">
+        <span class="bef bef-w-calcSD100per__MIN__3_5remED text-break">
+          {{ a.index + 1 + " " + a.question.question }}
+        </span>
+        <span class="border-start border-gray text-center bef bef-w-3rem">
+          {{ getOption(a) }}
+        </span>
+      </li>
+    </ng-container>
+  </ul>
 </section>
 <section class="m-3 bef bef-p-1rem bef-p-sm-3rem bg-secondary text-light text-center rounded-3">
   <h2 class="text-center h4 my-3">Opciones de la herramienta</h2>
@@ -132,4 +128,15 @@
   <button *ngIf="!checkIfAllEmpty()" (click)="clearAnswers()" class="btn btn-warning my-3">
     Limpiar todas las respuestas
   </button>
+</section>
+<section *ngIf="consola !== ''" class="m-3 bef bef-p-1rem bef-p-sm-3rem bg-secondary text-light text-center rounded-3">
+  <h2 class="text-center h4 my-3">
+    Mensajes de la aplicación
+  </h2>
+  <p class="text-break">
+    Aquí se mostrarán los mensajes de la aplicación.
+  </p>
+  <p class="text-break">
+    {{ consola }}
+  </p>
 </section>
