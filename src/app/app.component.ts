@@ -91,7 +91,7 @@ export class AppComponent implements OnInit {
   }
 
   getAnswers(imported: boolean = false) {
-    this.consola = 'Ya pueden exportar sus respuestas.';
+    this.consola = 'Ya se pueden exportar sus respuestas.';
     if (!imported) {
       this.writeText();
     }
@@ -104,11 +104,11 @@ export class AppComponent implements OnInit {
       }
       let newAnswers = JSON.parse(this.importInput);
       if (!newAnswers || !newAnswers[0]) {
-        throw new Error('Lo que has escrito no es válido, por favor revisalo.');
+        throw new Error('Lo que has escrito no es válido, por favor revísalo.');
       }
       if (this.answers.length !== newAnswers.length) {
         throw new Error(
-          'No hay la misma cantidad de preguntas que en el formato normal, por favor revisalo.'
+          'No hay la misma cantidad de preguntas que en el formato normal, por favor revísalo.'
         );
       }
       for (let nA of newAnswers) {
@@ -197,7 +197,7 @@ export class AppComponent implements OnInit {
   }
 
   writeText() {
-    let answers: any[] = this.answers;
+    let answers: any[] = JSON.parse(JSON.stringify(this.answers));
     for (let a of answers) {
       delete a.question;
     }
