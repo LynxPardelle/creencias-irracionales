@@ -188,7 +188,7 @@ export const questions: IQuestion[] = [
   },
   {
     section: '3 - Intolerancia a la frustración',
-    question: 'Es mejor 3 aceptar las cosas como son. incluso si no me gustar.',
+    question: 'Es mejor aceptar las cosas como son. incluso si no me gustan.',
     option1: 6,
     option2: 5,
     option3: 4,
@@ -429,7 +429,7 @@ export const questions: IQuestion[] = [
   },
   {
     section: '7 - Dependencia',
-    question: 'Encuentro fäc1l aceptar consejos.',
+    question: 'Encuentro fácil aceptar consejos.',
     option1: 1,
     option2: 2,
     option3: 3,

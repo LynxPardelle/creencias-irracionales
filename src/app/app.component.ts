@@ -112,16 +112,7 @@ export class AppComponent implements OnInit {
         );
       }
       for (let nA of newAnswers) {
-        console.log(this.answers[nA.index].question);
-        console.log(nA.question);
-        if (
-          JSON.stringify(this.answers[nA.index].question) !==
-          JSON.stringify(nA.question)
-        ) {
-          throw new Error(
-            'Una de las preguntas ha sido manipulada, revisa con atención lo que copiaste.'
-          );
-        }
+        this.answers[nA.index].answer = nA.answer;
       }
       this.answers = newAnswers;
       if (!this.checkIfAllEmpty()) {
@@ -206,7 +197,11 @@ export class AppComponent implements OnInit {
   }
 
   writeText() {
-    const str = JSON.stringify(this.answers);
+    let answers: any[] = this.answers;
+    for (let a of answers) {
+      delete a.question;
+    }
+    const str = JSON.stringify(answers);
     const FileSaver = fileSaver;
     const blob = new Blob([str], { type: 'text/plain;charset=utf-8' });
     FileSaver.saveAs(blob, 'CreenciasIrracionales.txt');
