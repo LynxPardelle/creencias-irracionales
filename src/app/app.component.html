@@ -1,0 +1,135 @@
+<h1 class="text-center my-3 px-3 mx-auto py-1 text-dark h3">
+  TEST DE CREENCIAS IRRACIONALES <wbr />
+  (VERSION CORREGIDA Y ABREVIADA)
+</h1>
+<section *ngIf="!finished">
+  <p class="mx-3 text-break">
+    A continuación se presentan una serie de ideas acerca de diversos aspectos
+    de la vida. Deberá indicar en que medida describen su forma de pensar
+    habitual con la siguiente clave de acuerdo:
+  </p>
+  <ul class="list-group mx-3">
+    <li class="list-group-item text-break text/center">
+      TD = Totalmente de acuerdo.
+    </li>
+    <li class="list-group-item text-break text/center">
+      BD = Bastante en desacuerdo.
+    </li>
+    <li class="list-group-item text-break text/center">
+      AD = Algo en desacuerdo.
+    </li>
+    <li class="list-group-item text-break text/center">
+      AA = Algo de acuerdo.
+    </li>
+    <li class="list-group-item text-break text/center">
+      BD = Bastante de acuerdo.
+    </li>
+    <li class="list-group-item text-break text/center">
+      TD = Totalmente de acuerdo.
+    </li>
+  </ul>
+</section>
+<section class="m-3 bef bef-p-1rem bef-p-sm-3rem bg-secondary text-light text-center rounded-3">
+  <ng-container *ngIf="!finished; else elseFinishedTemplate">
+    <h3 class="h5 bef bef-h-150px bef-h-sm-100px">
+      Pregunta {{ currentAnswer + 1 }} de {{ answers.length }} :
+      <br />
+      {{ getCurrentAnswer().question.question }}
+    </h3>
+    <button (click)="changeCurrentAnswer('-')" class="order-2 order-sm-0 btn btn-info fw-bold text-light px-3 my-3">
+      Regresar
+    </button>
+    <div class="d-flex flex-wrap justify-content-evenly align-items-center">
+      <button (click)="answerQuestion(getCurrentAnswer().question.option1)"
+        class="order-0 order-sm-1 btn px-4 bef bef-textHover-light fw-bold my-3" [ngClass]="{
+          'btn-success':
+            getCurrentAnswer().answer === getCurrentAnswer().question.option1,
+          'bef-btnOutline-success bef-bg-gray':
+            getCurrentAnswer().answer !== getCurrentAnswer().question.option1
+        }">
+        TD
+      </button>
+      <button (click)="answerQuestion(getCurrentAnswer().question.option2)"
+        class="order-0 order-sm-1 btn px-4 bef bef-textHover-light fw-bold my-3" [ngClass]="{
+          'btn-success':
+            getCurrentAnswer().answer === getCurrentAnswer().question.option2,
+          'bef-btnOutline-success bef-bg-gray':
+            getCurrentAnswer().answer !== getCurrentAnswer().question.option2
+        }">
+        BD
+      </button>
+      <button (click)="answerQuestion(getCurrentAnswer().question.option3)"
+        class="order-0 order-sm-1 btn px-4 bef bef-textHover-light fw-bold my-3" [ngClass]="{
+          'btn-success':
+            getCurrentAnswer().answer === getCurrentAnswer().question.option3,
+          'bef-btnOutline-success bef-bg-gray':
+            getCurrentAnswer().answer !== getCurrentAnswer().question.option3
+        }">
+        AD
+      </button>
+      <button (click)="answerQuestion(getCurrentAnswer().question.option4)"
+        class="order-0 order-sm-1 btn px-4 bef bef-textHover-light fw-bold my-3" [ngClass]="{
+          'btn-success':
+            getCurrentAnswer().answer === getCurrentAnswer().question.option4,
+          'bef-btnOutline-success bef-bg-gray':
+            getCurrentAnswer().answer !== getCurrentAnswer().question.option4
+        }">
+        AA
+      </button>
+      <button (click)="answerQuestion(getCurrentAnswer().question.option5)"
+        class="order-0 order-sm-1 btn px-4 bef bef-textHover-light fw-bold my-3" [ngClass]="{
+          'btn-success':
+            getCurrentAnswer().answer === getCurrentAnswer().question.option5,
+          'bef-btnOutline-success bef-bg-gray':
+            getCurrentAnswer().answer !== getCurrentAnswer().question.option5
+        }">
+        BD
+      </button>
+      <button (click)="answerQuestion(getCurrentAnswer().question.option6)"
+        class="order-0 order-sm-1 btn px-4 bef bef-textHover-light fw-bold my-3" [ngClass]="{
+          'btn-success':
+            getCurrentAnswer().answer === getCurrentAnswer().question.option6,
+          'bef-btnOutline-success bef-bg-gray':
+            getCurrentAnswer().answer !== getCurrentAnswer().question.option6
+        }">
+        TD.
+      </button>
+    </div>
+  </ng-container>
+  <ng-template #elseFinishedTemplate>
+    <h2 class="text-center text-decoration-underline h4 my-3">Tus respuestas</h2>
+    <ul class="list-group mx-3">
+      <li class="list-group-item d-flex flex-wrap justify-content-between">
+        <span class="bef bef-w-calcSD100per__MIN__3_5remED"> Pregunta </span>
+        <span class="border-start border-gray text-center bef bef-w-3rem">
+          Si/No
+        </span>
+      </li>
+      <ng-container *ngFor="let a of answers; let index$ = index; let last$ = last" [exist]="last$"
+        (ngInit)="cssCreate()">
+        <li *ngIf="a.answer !== 0" [exist]="a.answer !== 0" (ngInit)="cssCreate()"
+          class="list-group-item d-flex flex-wrap justify-content-between">
+          <span class="bef bef-w-calcSD100per__MIN__3_5remED text-break">
+            {{ a.index + 1 + " " + a.question.question }}
+          </span>
+          <span class="border-start border-gray text-center bef bef-w-3rem">
+            {{ a.answer }}
+          </span>
+        </li>
+      </ng-container>
+    </ul>
+  </ng-template>
+</section>
+<section class="m-3 bef bef-p-1rem bef-p-sm-3rem bg-secondary text-light text-center rounded-3">
+  <h2 class="text-center h4 my-3">Opciones de la herramienta</h2>
+  <div *ngIf="!finished && checkIfAllEmpty()">
+    <label for="subirArchivo" class="d-block my-3">Suba el archivo para importar respuestas.</label>
+    <input id="subirArchivo" type="file" class="form-control" (change)="handleFileSelect($event)" />
+  </div>
+  <button *ngIf="!!finished" (click)="getAnswers()" class="btn btn-success my-3">
+    Exportar respuestas
+  </button>
+  <button *ngIf="!checkIfAllEmpty()" (click)="clearAnswers()" class="btn btn-warning my-3">
+    Limpiar todas las respuestas
+  </button>
+</section>
